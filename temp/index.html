@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        textarea {
+            width: 100%;
+        }
+    </style>
+    <script src="https://cdn.rawgit.com/eligrey/FileSaver.js/5ed507ef8aa53d8ecfea96d96bc7214cd2476fd2/FileSaver.min.js"></script>
+</head>
+<body>
+    <textarea id="textarea_input" rows="10" placeholder="Once upon a time..."></textarea>
+    <button id="btn_paste">Paste</button>
+    <input type="checkbox" id="checkbox_newline">
+    <label for="checkbox_newline">With newline</label>
+    &nbsp;&nbsp;&nbsp;
+    <button id="btn_download">Download</button>
+
+    <script>
+        const textareaInput = document.getElementById("textarea_input");
+        const checkboxNewline = document.getElementById("checkbox_newline");
+        
+        document.getElementById("btn_paste").addEventListener("click", function() {
+            navigator.clipboard.readText()
+            .then(clipText => {
+                textareaInput.value += clipText;
+                
+                if (checkboxNewline.checked) {
+                    textareaInput.value += "\n";
+                }
+            });
+        });
+
+        document.getElementById("btn_download").addEventListener("click", function() {
+            saveAs(new Blob([textareaInput.value], { type: "text/plain;charset=utf-8" }), `${new Date().toJSON()}.txt`);
+        });
+        
+    </script>
+</body>
+</html>
