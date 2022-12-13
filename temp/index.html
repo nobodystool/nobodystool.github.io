@@ -23,6 +23,19 @@
         const textareaInput = document.getElementById("textarea_input");
         const checkboxNewline = document.getElementById("checkbox_newline");
         
+        const beforeUnloadListener = (event) => {
+            event.preventDefault();
+            return event.returnValue = "Are you sure you want to exit?";
+        };
+        
+        textareaInput.addEventListener("input", (event) => {
+            if (event.target.value !== "") {
+                addEventListener("beforeunload", beforeUnloadListener, { capture: true });
+            } else {
+                removeEventListener("beforeunload", beforeUnloadListener, { capture: true });
+            }
+        });
+        
         document.getElementById("btn_paste").addEventListener("click", function() {
             navigator.clipboard.readText()
             .then(clipText => {
